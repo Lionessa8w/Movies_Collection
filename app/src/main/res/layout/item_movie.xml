@@ -5,23 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/genres_list_recycler"
-        android:layout_width="411dp"
-        android:layout_height="330dp"
-        app:layout_constraintBottom_toTopOf="@+id/movies_list_recycler"
+    <ImageView
+        android:id="@+id/drawable_movie_item"
+        android:layout_width="156dp"
+        android:layout_height="350dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.133"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/movies_list_recycler"
-        android:layout_width="409dp"
-        android:layout_height="385dp"
+    <TextView
+        android:id="@+id/localized_name_item"
+        android:layout_width="154dp"
+        android:layout_height="25dp"
+        android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drawable_movie_item"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
