@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel
 import com.android.movies.MoviesActivity
 
 class MoviesViewModel: ViewModel() {
-    val repository=Repository()
+    val repository=FilmsRepository()
     var arrayListMovies: List<String> = repository.readJsonFromAssets(context = MoviesActivity.this,"jsonFile")
 
 }

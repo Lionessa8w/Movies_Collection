@@ -7,24 +7,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.movies.R
-import com.android.movies.model.Movie
+import com.android.movies.model.FilmsList
+import com.android.movies.model.FilmsModel
 
 class MoviesAdapter: RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
-    private var moviesList: List<Movie> = mutableListOf()
+    private var moviesList: List<FilmsModel> = mutableListOf()
 
 
     class MoviesViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        lateinit var movies: Movie
+        lateinit var movies: FilmsModel
 
 
         val textNameMovie:TextView=itemView.findViewById(R.id.localized_name_item)
         val imageMovies: ImageView= itemView.findViewById(R.id.drawable_movie_item)
 
-        fun bind(movies: Movie)= with(itemView) {
-            textNameMovie.text=movies.localized_name
+        fun bind(movies: FilmsModel)= with(itemView) {
+            textNameMovie.text=movies.localizedName
             // привязка imageMovies к movies.image_uri
-            //  сначала нужно распарсить json и получить ???
+            //  сначала нужно распарсить json и получить ???массив movies
 
 
 
