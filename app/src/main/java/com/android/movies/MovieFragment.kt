@@ -1,12 +1,15 @@
 package com.android.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MovieFragment : Fragment() {
 
@@ -29,6 +32,10 @@ class MovieFragment : Fragment() {
         year = view.findViewById(R.id.year)
         rating = view.findViewById(R.id.rating)
         description = view.findViewById(R.id.description)
+
+        lifecycleScope.launch {
+            Log.d("checkResult", ":MovieFragment is work")
+        }
 
         return view
     }
