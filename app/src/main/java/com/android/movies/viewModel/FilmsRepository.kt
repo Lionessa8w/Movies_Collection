@@ -39,6 +39,9 @@ class FilmsRepository {
     //получить список жанров
     fun listGenres(): List<String> {
         downloadFilmsList()
+        filmsListParseJson.map { filmsModel -> filmsModel.genres }
+            .
+
 
         return listGenres
     }
