@@ -25,7 +25,7 @@ class MovieFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_movies, container, false)
+        val view = inflater.inflate(R.layout.fragment_films, container, false)
         drawable = view.findViewById(R.id.drawable)
         name = view.findViewById(R.id.name)
         localizedName = view.findViewById(R.id.localized_name)

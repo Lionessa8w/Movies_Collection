@@ -39,10 +39,7 @@ class FilmsRepository {
     //получить список жанров
     fun listGenres(): List<String> {
         downloadFilmsList()
-        filmsListParseJson.map { filmsModel -> filmsModel.genres }
-            .
-
-
+        listGenres=filmsListParseJson.map { filmsModel -> filmsModel.genres }.flatten().toSet().toList()
         return listGenres
     }
     // получить список изображений по url
