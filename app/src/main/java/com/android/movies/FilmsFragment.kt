@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
-class MovieFragment : Fragment() {
+class FilmsFragment : Fragment() {
 
     private lateinit var drawable: ImageView
     private lateinit var name: TextView
@@ -34,7 +34,7 @@ class MovieFragment : Fragment() {
         description = view.findViewById(R.id.description)
 
         lifecycleScope.launch {
-            Log.d("checkResult", ":MovieFragment is work")
+            Log.d("checkResult", ":FilmsFragment is work")
         }
 
         return view
