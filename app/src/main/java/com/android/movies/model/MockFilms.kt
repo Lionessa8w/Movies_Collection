@@ -8,7 +8,7 @@ object MockFilms {
         return FilmsList(
             films = listOf<FilmsModel>(
                 FilmsModel(
-                    id=1,
+                    id = 1,
                     localizedName = "Шрек",
                     name = "Shrek",
                     year = 2001,
@@ -18,7 +18,7 @@ object MockFilms {
                     genres = listOf("films")
                 ),
                 FilmsModel(
-                    id=1,
+                    id = 1,
                     localizedName = "Шрек",
                     name = "Shrek",
                     year = 2001,
@@ -28,7 +28,7 @@ object MockFilms {
                     genres = listOf("films")
                 ),
                 FilmsModel(
-                    id=1,
+                    id = 1,
                     localizedName = "Шрек",
                     name = "Shrek",
                     year = 2001,

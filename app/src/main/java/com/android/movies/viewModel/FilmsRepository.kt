@@ -10,11 +10,9 @@ import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.MutableMap
-import kotlin.collections.MutableMap as MutableMap1
 
 private const val TAG = "Загрузка успешна"
 
@@ -33,18 +31,23 @@ class FilmsRepository {
     private val filmsApi = retrofit.create(FilmsAPI::class.java)
 
     //получаем весь список моделей фильмов
-    private fun downloadFilmsList() {
-        scope.launch {
+    private suspend fun getFullFilmsList(): List<FilmsModel> {
+        if (filmsListParseJson.isEmpty()) {
             filmsListParseJson = filmsApi.getAllFilmsModel().films
-            Log.d(TAG, "$filmsListParseJson")
         }
+        Log.d(TAG, "$filmsListParseJson")
+        return filmsListParseJson
+    }
+
+    suspend fun getFilmsByGenre(genre: String?): List<FilmsModel> {
+        if (genre == null) return getFullFilmsList()
+        return getFullFilmsList().filter { it.genres.contains(genre) }
     }
 
     //получить список жанров
-    fun getListGenres(): List<String> {
-        downloadFilmsList()
+    suspend fun getListGenres(): List<String> {
         listGenres =
-            filmsListParseJson.map { filmsModel -> filmsModel.genres }.flatten().toSet().toList()
+            getFullFilmsList().map { filmsModel -> filmsModel.genres }.flatten().toSet().toList()
         return listGenres
     }
 
@@ -62,15 +65,11 @@ class FilmsRepository {
     }
     // получаем id фильма по жанру
 
-    fun getListFilmsByGenre(genre: String): List<Int?> {
-
-        return filmsListParseJson.filter { it.genres.equals(genre) }.map(FilmsModel::id)
-    }
     //список изображение-название
-    fun getImageStringName(id:Int): MutableMap<Bitmap, String> {
-        val mapImageName= mutableMapOf<Bitmap, String>()
-        val imageString=getImageFilm(id)
-        val name=getLocalizedNameFilm(id)
+    fun getImageStringName(id: Int): MutableMap<Bitmap, String> {
+        val mapImageName = mutableMapOf<Bitmap, String>()
+        val imageString = getImageFilm(id)
+        val name = getLocalizedNameFilm(id)
         mapImageName[imageString] = name
         return mapImageName
     }
