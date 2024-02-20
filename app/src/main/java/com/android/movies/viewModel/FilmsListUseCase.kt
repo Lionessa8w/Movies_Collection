@@ -7,7 +7,7 @@ class FilmsListUseCase {
 
     private val repository = FilmsRepository()
 
-    // получаем данные фильма
+    // получаем cписок фильмов по жанру
     suspend fun getFilmsList(genre: String?): List<FilmsModel> {
         return repository.getFilmsByGenre(genre)
     }
