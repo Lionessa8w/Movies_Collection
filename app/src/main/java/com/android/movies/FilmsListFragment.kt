@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.movies.viewModel.FilmsListViewModel
 import com.android.movies.viewModel.GenresRecyclerAdapter
@@ -35,7 +36,8 @@ class FilmsListFragment : Fragment() {
         listGenres = view.findViewById(R.id.genres_list_recycler)
         listFilms = view.findViewById(R.id.films_list_recycler)
 
-        listFilms.layoutManager=GridLayoutManager(,2)
+        listFilms.layoutManager=GridLayoutManager(context,2)
+        listGenres.layoutManager=LinearLayoutManager(context)
 
         viewModel?.listGenres?.observe(viewLifecycleOwner){
             listGenres.adapter= GenresRecyclerAdapter(it)
