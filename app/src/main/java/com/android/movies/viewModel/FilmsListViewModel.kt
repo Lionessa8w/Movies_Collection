@@ -19,16 +19,23 @@ class FilmsListViewModel : ViewModel() {
     private val _listFilmsModel=MutableLiveData<List<FilmsModel>>()
     val listFilmsModel:LiveData<List<FilmsModel>> = _listFilmsModel
 
+    private var currentGenre: String?= null
+
     private val useCase = FilmsListUseCase()
 
 
 
     init {
+        getFilmList()
+    }
+
+    private fun getFilmList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _listFilmsModel.postValue(useCase.getFilmsList(null))
+            _listFilmsModel.postValue(useCase.getFilmsList(currentGenre))
             _listGenres.postValue(useCase.getListGenres())
-            Log.d("checkResult", ":MoviesViewModel is work ${useCase.getFilmsList(null)}")
+            Log.d("checkResult", ":MoviesViewModel is work ${useCase.getFilmsList(currentGenre)}")
         }
     }
+
 
 }
