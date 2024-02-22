@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/film_image_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"
@@ -34,7 +35,6 @@
                 android:id="@+id/localized_name_item"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:text="TextView"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="@+id/drawable_movie_item"
                 app:layout_constraintEnd_toEndOf="@+id/drawable_movie_item"
@@ -48,6 +48,7 @@
                 android:rotationX="0"
                 android:background="#D5D2D2"
                 android:alpha="0.7"
+                android:maxLines="2"
 
 
                 />

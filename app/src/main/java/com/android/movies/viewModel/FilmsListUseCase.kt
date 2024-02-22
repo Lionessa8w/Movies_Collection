@@ -5,7 +5,7 @@ import com.android.movies.model.FilmsModel
 
 class FilmsListUseCase {
 
-    private val repository = FilmsRepository()
+    private val repository = FilmsRepository.getInstanse()
 
     // получаем cписок фильмов по жанру
     suspend fun getFilmsList(genre: String?): List<FilmsModel> {

@@ -5,17 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.movies.R
 import com.android.movies.model.FilmsModel
 import com.bumptech.glide.Glide
 
-class ImageNameRecyclerAdapter(private val filmListModel: List<FilmsModel>) :
+class ImageNameRecyclerAdapter(
+    private val filmListModel: List<FilmsModel>,
+    private val onItemClicked: (id: Int) -> Unit
+) :
     RecyclerView.Adapter<ImageNameRecyclerAdapter.ImageNameViewHolder>() {
 
     class ImageNameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val filmImage: ImageView = itemView.findViewById(R.id.drawable_movie_item)
         val filmLocalized: TextView = itemView.findViewById(R.id.localized_name_item)
+        val imageFilmRoot: CardView = itemView.findViewById(R.id.film_image_root)
 
     }
 
@@ -36,6 +41,12 @@ class ImageNameRecyclerAdapter(private val filmListModel: List<FilmsModel>) :
             .centerCrop()
             .placeholder(R.drawable.cat)
             .into(holder.filmImage)
+        holder.imageFilmRoot.setOnClickListener {
+            filmListModel[position].id?.let {
+                onItemClicked(it)
+            }
 
+
+        }
     }
 }

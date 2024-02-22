@@ -10,13 +10,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.android.movies.R
 
-class GenresRecyclerAdapter(private val genres: List<String>) :
+class GenresRecyclerAdapter(
+    private val genres: List<String>,
+    private val onItemClicked: (genre: String ) -> Unit
+) :
     RecyclerView.Adapter<GenresRecyclerAdapter.GenresViewHolder>() {
 
     class GenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val genresText: TextView = itemView.findViewById(R.id.genres_item)
-        val containerRoot: ConstraintLayout=itemView.findViewById(R.id.container_root)
-        
+        val containerRoot: ConstraintLayout = itemView.findViewById(R.id.container_root)
+
 
     }
 
@@ -31,6 +34,7 @@ class GenresRecyclerAdapter(private val genres: List<String>) :
     override fun onBindViewHolder(holder: GenresViewHolder, position: Int) {
         holder.genresText.text = genres[position]
         holder.containerRoot.setOnClickListener {
+            onItemClicked(genres[position])
 
             Log.d("checkResult", "onBindViewHolder: клик работает")
         }

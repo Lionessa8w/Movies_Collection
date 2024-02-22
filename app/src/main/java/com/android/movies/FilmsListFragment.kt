@@ -1,6 +1,7 @@
 package com.android.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,12 +41,19 @@ class FilmsListFragment : Fragment() {
         listGenres.layoutManager=LinearLayoutManager(context)
 
         viewModel?.listGenres?.observe(viewLifecycleOwner){
-            listGenres.adapter= GenresRecyclerAdapter(it)
+            listGenres.adapter= GenresRecyclerAdapter(it){ genre ->
+                viewModel?.setCurrentGenre(genre)
+            }
 
         }
         viewModel?.listFilmsModel?.observe(viewLifecycleOwner){
-            listFilms.adapter= ImageNameRecyclerAdapter(it)
+            listFilms.adapter= ImageNameRecyclerAdapter(it) {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .add(R.id.container_root, FilmsFragment()).commit()
+                Log.d("checkResult", "onCreateView: работает")
+            }
         }
+
         return view
     }
 }

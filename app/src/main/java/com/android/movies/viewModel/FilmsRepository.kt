@@ -6,6 +6,7 @@ import android.util.Base64
 import android.util.Log
 import com.android.movies.model.FilmsAPI
 import com.android.movies.model.FilmsModel
+import com.android.movies.viewModel.FilmsRepository.Companion.INSTANSE
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ import kotlin.collections.MutableMap
 private const val TAG = "Загрузка успешна"
 
 // парсинг jsonFile
-class FilmsRepository {
+class FilmsRepository private constructor(){
     //корутина, асинхронный поток
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var filmsListParseJson = listOf<FilmsModel>()
@@ -75,6 +76,21 @@ class FilmsRepository {
     }
 
     // для фрагмента ???
+    suspend fun getFilmInfo(id: Int): FilmsModel {
+        return getFullFilmsList().first { it.id == id }
+
+    }
+    companion object{
+        private var INSTANSE: FilmsRepository? =null
+
+        fun getInstanse(): FilmsRepository{
+            return synchronized(this) {
+                val currentInstanse= INSTANSE?: FilmsRepository()
+                INSTANSE=currentInstanse
+                currentInstanse
+            }
+        }
+    }
 
 
 }

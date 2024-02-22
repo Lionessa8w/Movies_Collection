@@ -28,6 +28,10 @@ class FilmsListViewModel : ViewModel() {
     init {
         getFilmList()
     }
+    fun setCurrentGenre(genre: String){
+        currentGenre=genre
+        getFilmList()
+    }
 
     private fun getFilmList() {
         viewModelScope.launch(Dispatchers.IO) {
