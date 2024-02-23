@@ -49,7 +49,7 @@ class FilmsListFragment : Fragment() {
         viewModel?.listFilmsModel?.observe(viewLifecycleOwner){
             listFilms.adapter= ImageNameRecyclerAdapter(it) {
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .add(R.id.container_root, FilmsFragment()).commit()
+                    .replace(R.id.container_root, FilmsFragment()).addToBackStack(null).commit()
                 Log.d("checkResult", "onCreateView: работает")
             }
         }

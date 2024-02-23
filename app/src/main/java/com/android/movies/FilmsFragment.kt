@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.android.movies.viewModel.InfoFilmViewModel
+import com.android.movies.viewModel.InfoFilmViewModelFactory
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -22,10 +23,13 @@ class FilmsFragment : Fragment() {
     private lateinit var year: TextView
     private lateinit var rating: TextView
     private lateinit var description: TextView
-    private var viewModel: InfoFilmViewModel?=null
+    private var viewModel: InfoFilmViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel=ViewModelProvider(this)[InfoFilmViewModel::class.java]
+        // TODO поменяй айдишник
+        viewModel = ViewModelProvider(this, InfoFilmViewModelFactory(id = 326)).get(
+            InfoFilmViewModel::class.java
+        )
         super.onCreate(savedInstanceState)
     }
 
@@ -42,12 +46,12 @@ class FilmsFragment : Fragment() {
         rating = view.findViewById(R.id.rating)
         description = view.findViewById(R.id.description)
 
-        viewModel?.filmsModel?.observe(viewLifecycleOwner){
-            name.text=it.name
-            localizedName.text=it.localizedName
-            year.text=it.year.toString()
-            rating.text=it.rating.toString()
-            description.text=it.description
+        viewModel?.filmsModel?.observe(viewLifecycleOwner) {
+            name.text = it.name
+            localizedName.text = it.localizedName
+            year.text = it.year.toString()
+            rating.text = it.rating.toString()
+            description.text = it.description
             Glide
                 .with(this)
                 .load(it.imageUrl)
