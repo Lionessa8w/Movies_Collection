@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Фильмы</string>
+    <string name="card_name">Оригинальное название: </string>
+    <string name="card_rating">Рейтинг : </string>
+    <string name="card_year">Год : </string>
+
+
 </resources>

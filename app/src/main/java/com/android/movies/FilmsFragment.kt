@@ -15,6 +15,8 @@ import com.android.movies.viewModel.InfoFilmViewModelFactory
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
+private const val KEY_ID = "keyId"
+
 class FilmsFragment : Fragment() {
 
     private lateinit var image: ImageView
@@ -27,18 +29,22 @@ class FilmsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // TODO поменяй айдишник
-        viewModel = ViewModelProvider(this, InfoFilmViewModelFactory(id = 326)).get(
+        viewModel = ViewModelProvider(
+            this,
+            InfoFilmViewModelFactory(id = arguments?.getInt(KEY_ID) ?: 0)
+        ).get(
             InfoFilmViewModel::class.java
         )
         super.onCreate(savedInstanceState)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.film_info_scroll, container, false)
+        val view = inflater.inflate(R.layout.film_info_scroll_new, container, false)
         image = view.findViewById(R.id.image)
         name = view.findViewById(R.id.name)
         localizedName = view.findViewById(R.id.localized_name)
@@ -47,10 +53,11 @@ class FilmsFragment : Fragment() {
         description = view.findViewById(R.id.description)
 
         viewModel?.filmsModel?.observe(viewLifecycleOwner) {
-            name.text = it.name
+
+            name.text = getString(R.string.card_name)+it.name
             localizedName.text = it.localizedName
-            year.text = it.year.toString()
-            rating.text = it.rating.toString()
+            year.text = getString(R.string.card_year)+it.year.toString()
+            rating.text = getString(R.string.card_rating)+it.rating.toString()
             description.text = it.description
             Glide
                 .with(this)
@@ -69,4 +76,13 @@ class FilmsFragment : Fragment() {
         return view
     }
 
+    companion object {
+        fun newInstance(id: Int): FilmsFragment {
+            val args = Bundle()
+            args.putInt(KEY_ID, id)
+            val fragment = FilmsFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }

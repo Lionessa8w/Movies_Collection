@@ -23,6 +23,7 @@ class FilmsRepository private constructor(){
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var filmsListParseJson = listOf<FilmsModel>()
     private var listGenres = listOf<String>()
+    //создать базу данных room
 
     private val retrofit = Retrofit
         .Builder()
@@ -52,30 +53,6 @@ class FilmsRepository private constructor(){
         return listGenres
     }
 
-    // получить изображение по id фильма
-    fun getImageFilm(id: Int): Bitmap {
-        val imageString = filmsListParseJson[id].imageUrl.toString()
-        val imageBytes = Base64.decode(imageString, 0)
-
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-    }
-
-    //название фильма по id
-    fun getLocalizedNameFilm(id: Int): String {
-        return filmsListParseJson[id].localizedName.toString()
-    }
-    // получаем id фильма по жанру
-
-    //список изображение-название
-    fun getImageStringName(id: Int): MutableMap<Bitmap, String> {
-        val mapImageName = mutableMapOf<Bitmap, String>()
-        val imageString = getImageFilm(id)
-        val name = getLocalizedNameFilm(id)
-        mapImageName[imageString] = name
-        return mapImageName
-    }
-
-    // для фрагмента ???
     suspend fun getFilmInfo(id: Int): FilmsModel {
         return getFullFilmsList().first { it.id == id }
 
