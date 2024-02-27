@@ -28,7 +28,6 @@ class FilmsFragment : Fragment() {
     private var viewModel: InfoFilmViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // TODO поменяй айдишник
         viewModel = ViewModelProvider(
             this,
             InfoFilmViewModelFactory(id = arguments?.getInt(KEY_ID) ?: 0)

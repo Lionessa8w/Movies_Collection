@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-android")
     id("kotlinx-serialization")
+    id("kotlin-kapt")
 }
 
 android {
@@ -62,6 +63,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.room:androidx.room.gradle.plugin:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
 
     testImplementation("junit:junit:4.13.2")
