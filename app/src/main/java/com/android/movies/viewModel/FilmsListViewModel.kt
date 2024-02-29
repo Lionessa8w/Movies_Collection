@@ -40,6 +40,12 @@ class FilmsListViewModel : ViewModel() {
             Log.d("checkResult", ":MoviesViewModel is work ${useCase.getFilmsList(currentGenre)}")
         }
     }
+    fun addLiked(id: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            useCase.addFilmLike(id)
+        }
+    }
+
 
 
 }

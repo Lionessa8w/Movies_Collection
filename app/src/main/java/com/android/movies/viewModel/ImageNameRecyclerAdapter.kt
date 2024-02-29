@@ -1,21 +1,24 @@
 package com.android.movies.viewModel
 
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.android.movies.FilmsListFragment
 import com.android.movies.R
 import com.android.movies.model.FilmsModel
 import com.bumptech.glide.Glide
 
 class ImageNameRecyclerAdapter(
     private val filmListModel: List<FilmsModel>,
-    private val onItemClicked: (id: Int) -> Unit
+    private val onCardClicked: (id: Int) -> Unit,
+    private val onLikeClicked: (id: Int) -> Unit
 ) :
     RecyclerView.Adapter<ImageNameRecyclerAdapter.ImageNameViewHolder>() {
 
@@ -41,6 +44,7 @@ class ImageNameRecyclerAdapter(
 //        if (isOdd) {
 //        } else {
 //        }
+        renderLike(holder, position)
         holder.filmLocalized.text = filmListModel[position].localizedName
         Glide
             .with(holder.filmImage.context)
@@ -50,15 +54,38 @@ class ImageNameRecyclerAdapter(
             .into(holder.filmImage)
         holder.imageFilmRoot.setOnClickListener {
             filmListModel[position].id?.let {
-                onItemClicked(it)
+                onCardClicked(it)
             }
-            holder.imageLike.setOnClickListener {
-                filmListModel[position].id?.let {
-                    // добавить фильм в лист избранного
-                }
+        }
+        holder.imageLike.setOnClickListener {
+            filmListModel[position].id?.let { id ->
+                onLikeClicked(id)
+                Log.d("likeClick", "работает")
+                checkLike(holder, position)
+                Log.d("checkLike", "работает ")
+
             }
+        }
 
 
+    }
+
+    fun checkLike(holder: ImageNameViewHolder, position: Int) {
+        filmListModel[position].isLiked = !filmListModel[position].isLiked
+        renderLike(holder,position)
+    }
+
+    private fun renderLike(holder: ImageNameViewHolder, position: Int) {
+        if (filmListModel[position].isLiked) {
+            holder.imageLike.setImageDrawable( AppCompatResources.getDrawable(
+                holder.imageLike.context,
+                R.drawable.baseline_favorite_24
+            ))
+        } else {
+            holder.imageLike.setImageDrawable( AppCompatResources.getDrawable(
+                holder.imageLike.context,
+                R.drawable.baseline_0
+            ))
         }
     }
 }

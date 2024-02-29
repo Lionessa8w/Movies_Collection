@@ -11,6 +11,9 @@ interface FilmsListIdDao {
     @Query("SELECT * FROM film_state_entity")
     fun getAll(): List<FilmsStateEntity>
 
+    @Query("DELETE FROM film_state_entity WHERE id = :id")
+    fun deletedIdFilm(id: String)
+
     @Insert(entity = FilmsStateEntity::class)
     fun insertNewId(filmsStateEntity: FilmsStateEntity)
 }

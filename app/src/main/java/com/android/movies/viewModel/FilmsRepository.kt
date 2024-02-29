@@ -6,6 +6,9 @@ import android.util.Base64
 import android.util.Log
 import com.android.movies.model.FilmsAPI
 import com.android.movies.model.FilmsModel
+import com.android.movies.room.BdHolder
+import com.android.movies.room.FilmState
+import com.android.movies.room.FilmsStateEntity
 import com.android.movies.viewModel.FilmsRepository.Companion.INSTANSE
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -18,11 +21,12 @@ import kotlin.collections.MutableMap
 private const val TAG = "Загрузка успешна"
 
 // парсинг jsonFile
-class FilmsRepository private constructor(){
+class FilmsRepository private constructor() {
     //корутина, асинхронный поток
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var filmsListParseJson = listOf<FilmsModel>()
     private var listGenres = listOf<String>()
+    private val filmListDao= BdHolder.getInstance().getDatabase().filmListIdDao()
     //создать базу данных room
 
     private val retrofit = Retrofit
@@ -34,11 +38,20 @@ class FilmsRepository private constructor(){
 
     //получаем весь список моделей фильмов
     private suspend fun getFullFilmsList(): List<FilmsModel> {
+        // получили список всех фильмов
         if (filmsListParseJson.isEmpty()) {
             filmsListParseJson = filmsApi.getAllFilmsModel().films
         }
         Log.d(TAG, "$filmsListParseJson")
-        return filmsListParseJson
+        val listBd = filmListDao.getAll()
+        val likeList = listBd.filter { it.filmState == FilmState.FAVORITE }.map { it.id }
+        val currentFilmsListParseJson = filmsListParseJson
+        currentFilmsListParseJson.forEach {
+            val isFavorite = likeList.contains(it.id.toString())
+            it.isLiked = isFavorite
+        }
+
+        return currentFilmsListParseJson
     }
 
     suspend fun getFilmsByGenre(genre: String?): List<FilmsModel> {
@@ -57,13 +70,29 @@ class FilmsRepository private constructor(){
         return getFullFilmsList().first { it.id == id }
 
     }
-    companion object{
-        private var INSTANSE: FilmsRepository? =null
 
-        fun getInstanse(): FilmsRepository{
+//    //получение списка фильма из бд
+//    suspend fun allFilmBd(): List<FilmsStateEntity> {
+//        return filmListDao.getAll()
+//    }
+
+    // функция добавления фильма в бд
+    suspend fun addFilmLike(id: Int) {
+        filmListDao.insertNewId(FilmsStateEntity(id.toString(), FilmState.FAVORITE))
+    }
+
+    suspend fun deletedFilmLik(filmsStateEntity: FilmsStateEntity) {
+        filmListDao.deletedIdFilm(filmsStateEntity.id)
+    }
+
+
+    companion object {
+        private var INSTANSE: FilmsRepository? = null
+
+        fun getInstanse(): FilmsRepository {
             return synchronized(this) {
-                val currentInstanse= INSTANSE?: FilmsRepository()
-                INSTANSE=currentInstanse
+                val currentInstanse = INSTANSE ?: FilmsRepository()
+                INSTANSE = currentInstanse
                 currentInstanse
             }
         }

@@ -1,6 +1,9 @@
 package com.android.movies.viewModel
 
 import com.android.movies.model.FilmsModel
+import com.android.movies.room.BdHolder
+import com.android.movies.room.FilmState
+import com.android.movies.room.FilmsStateEntity
 
 
 class FilmsListUseCase {
@@ -15,6 +18,16 @@ class FilmsListUseCase {
     //список жанров функция
     suspend fun getListGenres(): List<String> {
         return repository.getListGenres()
+    }
+
+    // функция добавления фильма в бд
+    suspend fun addFilmLike(id: Int) {
+        repository.addFilmLike(id)
+    }
+
+    suspend fun deletedFilmLik(filmsStateEntity: FilmsStateEntity) {
+//        filmListDao.deletedIdFilm(filmsStateEntity.id)
+
     }
 
 }

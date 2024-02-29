@@ -47,11 +47,16 @@ class FilmsListFragment : Fragment() {
 
         }
         viewModel?.listFilmsModel?.observe(viewLifecycleOwner){
-            listFilms.adapter= ImageNameRecyclerAdapter(it) { id ->
+            listFilms.adapter= ImageNameRecyclerAdapter(filmListModel = it, onCardClicked = { id ->
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.container_root, FilmsFragment.newInstance(id)).addToBackStack(null).commit()
                 Log.d("checkResult", "onCreateView: работает")
-            }
+            }, onLikeClicked = {id ->
+                viewModel?.addLiked(id)
+
+                //добавление фильма в бд
+
+            }) 
         }
 
         return view

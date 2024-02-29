@@ -73,7 +73,7 @@
         <ImageView
                 android:layout_width="116dp"
                 android:layout_height="108dp"
-                app:srcCompat="@drawable/heart_0"
+                app:srcCompat="@drawable/baseline_0"
                 android:id="@+id/imageLike"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
