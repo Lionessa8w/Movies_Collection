@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
+import androidx.core.graphics.PathUtils.flatten
 import com.android.movies.model.FilmsAPI
 import com.android.movies.model.FilmsModel
 import com.android.movies.room.BdHolder
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.stream.Collectors.toSet
 import kotlin.collections.MutableMap
 
 private const val TAG = "Загрузка успешна"
@@ -26,8 +28,8 @@ class FilmsRepository private constructor() {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private var filmsListParseJson = listOf<FilmsModel>()
     private var listGenres = listOf<String>()
-    private val filmListDao= BdHolder.getInstance().getDatabase().filmListIdDao()
-    //создать базу данных room
+    private val listGenreLike = listOf("любимые")
+    private val filmListDao = BdHolder.getInstance().getDatabase().filmListIdDao()
 
     private val retrofit = Retrofit
         .Builder()
@@ -59,10 +61,18 @@ class FilmsRepository private constructor() {
         return getFullFilmsList().filter { it.genres.contains(genre) }
     }
 
+    //список любимых фильмов
+    suspend fun getLikeFilms(): List<FilmsModel> {
+        return getFullFilmsList().filter { it.isLiked }
+
+    }
+
     //получить список жанров
     suspend fun getListGenres(): List<String> {
         listGenres =
-            getFullFilmsList().map { filmsModel -> filmsModel.genres }.flatten().toSet().toList()
+            getFullFilmsList().map { filmsModel -> filmsModel.genres }.flatten().plus(listGenreLike)
+                .toSet().toList()
+
         return listGenres
     }
 
@@ -71,18 +81,17 @@ class FilmsRepository private constructor() {
 
     }
 
-//    //получение списка фильма из бд
-//    suspend fun allFilmBd(): List<FilmsStateEntity> {
-//        return filmListDao.getAll()
-//    }
-
     // функция добавления фильма в бд
     suspend fun addFilmLike(id: Int) {
         filmListDao.insertNewId(FilmsStateEntity(id.toString(), FilmState.FAVORITE))
     }
 
-    suspend fun deletedFilmLik(filmsStateEntity: FilmsStateEntity) {
-        filmListDao.deletedIdFilm(filmsStateEntity.id)
+    suspend fun deletedFilmLik(id: Int) {
+        filmListDao.deletedIdFilm(id.toString())
+    }
+
+    suspend fun getIdFilm(id: Int): FilmsStateEntity? {
+        return filmListDao.getIdFilms(id.toString()).firstOrNull()
     }
 
 

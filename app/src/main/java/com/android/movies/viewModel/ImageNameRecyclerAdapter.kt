@@ -2,6 +2,7 @@ package com.android.movies.viewModel
 
 import android.graphics.drawable.Drawable
 import android.util.Log
+import android.util.LogPrinter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,8 @@ import com.bumptech.glide.Glide
 class ImageNameRecyclerAdapter(
     private val filmListModel: List<FilmsModel>,
     private val onCardClicked: (id: Int) -> Unit,
-    private val onLikeClicked: (id: Int) -> Unit
+    private val onLikeClicked: (id: Int) -> Unit,
+
 ) :
     RecyclerView.Adapter<ImageNameRecyclerAdapter.ImageNameViewHolder>() {
 
@@ -40,10 +42,6 @@ class ImageNameRecyclerAdapter(
     override fun getItemCount(): Int = filmListModel.size
 
     override fun onBindViewHolder(holder: ImageNameViewHolder, position: Int) {
-//        val isOdd = position % 2 == 0
-//        if (isOdd) {
-//        } else {
-//        }
         renderLike(holder, position)
         holder.filmLocalized.text = filmListModel[position].localizedName
         Glide

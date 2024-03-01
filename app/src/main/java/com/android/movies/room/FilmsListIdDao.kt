@@ -16,6 +16,12 @@ interface FilmsListIdDao {
 
     @Insert(entity = FilmsStateEntity::class)
     fun insertNewId(filmsStateEntity: FilmsStateEntity)
+
+    @Query("SELECT * FROM film_state_entity WHERE id = :id")
+    fun getIdFilms(id: String): List<FilmsStateEntity>
+
+
+
 }
 
 @Database(

@@ -12,6 +12,9 @@ class FilmsListUseCase {
 
     // получаем cписок фильмов по жанру
     suspend fun getFilmsList(genre: String?): List<FilmsModel> {
+        if (genre == "любимые") {
+            return repository.getLikeFilms()
+        }
         return repository.getFilmsByGenre(genre)
     }
 
@@ -25,9 +28,25 @@ class FilmsListUseCase {
         repository.addFilmLike(id)
     }
 
-    suspend fun deletedFilmLik(filmsStateEntity: FilmsStateEntity) {
-//        filmListDao.deletedIdFilm(filmsStateEntity.id)
-
+    suspend fun deletedLike(id: Int) {
+        repository.deletedFilmLik(id)
     }
+
+    suspend fun isLiked(id: Int): Boolean {
+        val entity = repository.getIdFilm(id)
+        if (entity != null) {
+            return entity.filmState == FilmState.FAVORITE
+        }
+        return false
+    }
+
+    suspend fun setLikeOrDelete(id: Int) {
+        if (isLiked(id)) {
+            deletedLike(id)
+        } else {
+            addFilmLike(id)
+        }
+    }
+
 
 }

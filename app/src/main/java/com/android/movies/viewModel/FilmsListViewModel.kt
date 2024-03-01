@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.movies.model.FilmsModel
-import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -37,14 +36,17 @@ class FilmsListViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _listFilmsModel.postValue(useCase.getFilmsList(currentGenre))
             _listGenres.postValue(useCase.getListGenres())
+
+
             Log.d("checkResult", ":MoviesViewModel is work ${useCase.getFilmsList(currentGenre)}")
         }
     }
-    fun addLiked(id: Int){
+    fun setLikeOrDelete(id: Int){
         viewModelScope.launch(Dispatchers.IO) {
-            useCase.addFilmLike(id)
+            useCase.setLikeOrDelete(id)
         }
     }
+
 
 
 
