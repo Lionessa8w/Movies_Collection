@@ -19,6 +19,7 @@ class FilmsListFragment : Fragment() {
     private lateinit var listGenres: RecyclerView
     private lateinit var listFilms: RecyclerView
 
+
     private var viewModel: FilmsListViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
