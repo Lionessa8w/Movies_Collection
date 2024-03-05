@@ -5,10 +5,10 @@ import com.android.movies.model.FilmsModel
 sealed class FilmListViewModelState {
     object Loading : FilmListViewModelState()
 
-    class Error : FilmListViewModelState()
+    data class Error(val message: String) : FilmListViewModelState()
 
     class Success(
-        private val genresList: List<String>,
-        private val filmsList: List<FilmsModel>
+        val genresList: List<String>,
+        val filmsList: List<FilmsModel>
     ) : FilmListViewModelState()
 }

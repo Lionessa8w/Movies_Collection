@@ -5,25 +5,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.movies.model.FilmsModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FilmsListViewModel : ViewModel() {
 
 
-    private val _listGenres = MutableLiveData<List<String>>()
-    val listGenres: LiveData<List<String>> = _listGenres
-
-    private val _listFilmsModel = MutableLiveData<List<FilmsModel>>()
-    val listFilmsModel: LiveData<List<FilmsModel>> = _listFilmsModel
+    private var getFilmListJob: Job? = null
+    private val _listFilmsState =
+        MutableLiveData<FilmListViewModelState>(FilmListViewModelState.Loading)
+    val listFilmsState: LiveData<FilmListViewModelState> = _listFilmsState
 
     private var currentGenre: String? = null
 
     private val useCase = FilmsListUseCase()
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { coroutineContext, throwable ->
+            _listFilmsState.postValue(
+                FilmListViewModelState.Error(
+                    throwable.localizedMessage ?: throwable.message ?: ""
+                )
+            )
 
         }
 
@@ -37,11 +42,19 @@ class FilmsListViewModel : ViewModel() {
         getFilmList()
     }
 
-    private fun getFilmList() {
-        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            _listFilmsModel.postValue(useCase.getFilmsList(currentGenre))
-            _listGenres.postValue(useCase.getListGenres())
+    fun getFilmList() {
+        getFilmListJob?.cancel()
 
+        getFilmListJob = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            _listFilmsState.postValue(FilmListViewModelState.Loading)
+            val genresList = useCase.getListGenres()
+            val filmsModel = useCase.getFilmsList(currentGenre)
+            _listFilmsState.postValue(
+                FilmListViewModelState.Success(
+                    genresList = genresList,
+                    filmsList = filmsModel
+                )
+            )
 
             Log.d("checkResult", ":MoviesViewModel is work ${useCase.getFilmsList(currentGenre)}")
         }
