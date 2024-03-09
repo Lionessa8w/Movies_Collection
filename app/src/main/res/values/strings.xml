@@ -5,6 +5,7 @@
     <string name="card_year">Год : </string>
     <string name="text_error">Нет подключения к сети</string>
     <string name="button_error">Обновить</string>
+    <string name="button_ignore">Неинтересно</string>
     <string name="description">description</string>
 
 

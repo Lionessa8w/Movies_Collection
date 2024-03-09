@@ -1,8 +1,6 @@
 package com.android.movies.viewModel
 
-import android.graphics.drawable.Drawable
 import android.util.Log
-import android.util.LogPrinter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.android.movies.R
 import com.android.movies.model.FilmsModel
@@ -20,8 +17,9 @@ class ImageNameRecyclerAdapter(
     private val filmListModel: List<FilmsModel>,
     private val onCardClicked: (id: Int) -> Unit,
     private val onLikeClicked: (id: Int) -> Unit,
+    private val onIgnoreClicked: (id: Int) -> Unit,
 
-) :
+    ) :
     RecyclerView.Adapter<ImageNameRecyclerAdapter.ImageNameViewHolder>() {
 
     class ImageNameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +27,7 @@ class ImageNameRecyclerAdapter(
         val filmLocalized: TextView = itemView.findViewById(R.id.localized_name_item)
         val imageFilmRoot: CardView = itemView.findViewById(R.id.film_image_root)
         val imageLike: ImageView = itemView.findViewById(R.id.imageLike)
+        val imageIgnore: ImageView= itemView.findViewById(R.id.imageView_ignore)
 
     }
 
@@ -64,26 +63,57 @@ class ImageNameRecyclerAdapter(
 
             }
         }
+        holder.imageIgnore.setOnClickListener {
+            filmListModel[position].id?.let {
+                id-> onIgnoreClicked(id)
+                checkIgnore(holder, position)
+            }
+        }
 
 
     }
 
     fun checkLike(holder: ImageNameViewHolder, position: Int) {
         filmListModel[position].isLiked = !filmListModel[position].isLiked
-        renderLike(holder,position)
+        renderLike(holder, position)
+    }
+    fun checkIgnore(holder: ImageNameViewHolder, position: Int){
+        filmListModel[position].isIgnore=!filmListModel[position].isIgnore
+        renderIgnore(holder, position)
     }
 
     private fun renderLike(holder: ImageNameViewHolder, position: Int) {
         if (filmListModel[position].isLiked) {
-            holder.imageLike.setImageDrawable( AppCompatResources.getDrawable(
-                holder.imageLike.context,
-                R.drawable.baseline_favorite_24
-            ))
+            holder.imageLike.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    holder.imageLike.context,
+                    R.drawable.baseline_favorite_24
+                )
+            )
         } else {
-            holder.imageLike.setImageDrawable( AppCompatResources.getDrawable(
-                holder.imageLike.context,
-                R.drawable.baseline_0
-            ))
+            holder.imageLike.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    holder.imageLike.context,
+                    R.drawable.baseline_0
+                )
+            )
+        }
+    }
+    private fun renderIgnore(holder: ImageNameViewHolder, position: Int){
+        if(filmListModel[position].isIgnore){
+            holder.imageIgnore.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    holder.imageIgnore.context,
+                    R.drawable.baseline_ignore_red
+                )
+            )
+        } else{
+            holder.imageIgnore.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    holder.imageIgnore.context,
+                    R.drawable.baseline_ignore_0
+                )
+            )
         }
     }
 }

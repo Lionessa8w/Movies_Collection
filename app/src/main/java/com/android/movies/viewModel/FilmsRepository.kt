@@ -1,34 +1,23 @@
 package com.android.movies.viewModel
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
-import androidx.core.graphics.PathUtils.flatten
 import com.android.movies.model.FilmsAPI
 import com.android.movies.model.FilmsModel
 import com.android.movies.room.BdHolder
 import com.android.movies.room.FilmState
 import com.android.movies.room.FilmsStateEntity
-import com.android.movies.viewModel.FilmsRepository.Companion.INSTANSE
 import com.google.gson.GsonBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.stream.Collectors.toSet
-import kotlin.collections.MutableMap
 
 private const val TAG = "Загрузка успешна"
 
 // парсинг jsonFile
 class FilmsRepository private constructor() {
-    //корутина, асинхронный поток
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
     private var filmsListParseJson = listOf<FilmsModel>()
     private var listGenres = listOf<String>()
-    private val listGenreLike = listOf("любимые")
+    private val listGenreLike = listOf("любимые", "неинтересно")
     private val filmListDao = BdHolder.getInstance().getDatabase().filmListIdDao()
 
     private val retrofit = Retrofit
@@ -47,11 +36,26 @@ class FilmsRepository private constructor() {
         Log.d(TAG, "$filmsListParseJson")
         val listBd = filmListDao.getAll()
         val likeList = listBd.filter { it.filmState == FilmState.FAVORITE }.map { it.id }
+ //       val ignoreList= listBd.filter { it.filmState==FilmState.IGNORE }.map { it.id }
         val currentFilmsListParseJson = filmsListParseJson
         currentFilmsListParseJson.forEach {
             val isFavorite = likeList.contains(it.id.toString())
             it.isLiked = isFavorite
         }
+//        currentFilmsListParseJson.forEach {
+//            val isIgnoreFilms = ignoreList.contains(it.id.toString())
+//            it.isIgnore = isIgnoreFilms
+//        }
+
+        //спросить!!!!!!!!!!!!
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+        //
 
         return currentFilmsListParseJson
     }
@@ -65,6 +69,10 @@ class FilmsRepository private constructor() {
     suspend fun getLikeFilms(): List<FilmsModel> {
         return getFullFilmsList().filter { it.isLiked }
 
+    }
+
+    suspend fun getIgnoreFilms(): List<FilmsModel> {
+        return getFullFilmsList().filter { it.isIgnore }
     }
 
     //получить список жанров
@@ -86,7 +94,11 @@ class FilmsRepository private constructor() {
         filmListDao.insertNewId(FilmsStateEntity(id.toString(), FilmState.FAVORITE))
     }
 
-    suspend fun deletedFilmLik(id: Int) {
+    suspend fun addFilmIgnore(id: Int) {
+        filmListDao.insertNewId(FilmsStateEntity(id.toString(), FilmState.IGNORE))
+    }
+
+    suspend fun deletedFilm(id: Int) {
         filmListDao.deletedIdFilm(id.toString())
     }
 

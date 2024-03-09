@@ -48,11 +48,11 @@ class FilmsListFragment : Fragment() {
         errorContainer = view.findViewById(R.id.container_error)
         textError = view.findViewById(R.id.text_error)
         buttonError = view.findViewById(R.id.button_error)
-        loadingContainer=view.findViewById(R.id.container_loading)
-        imageCatGif=view.findViewById(R.id.imageView_loading)
+        loadingContainer = view.findViewById(R.id.container_loading)
+        imageCatGif = view.findViewById(R.id.imageView_loading)
 
         buttonError.setOnClickListener {
-           viewModel?.getFilmList()
+            viewModel?.getFilmList()
 
         }
 
@@ -86,7 +86,10 @@ class FilmsListFragment : Fragment() {
                             },
                             onLikeClicked = {
                                 viewModel?.setLikeOrDelete(id)
-                            })
+                            }, onIgnoreClicked = {
+                                viewModel?.setIgnore(id)
+                            }
+                        )
                     listGenres.adapter = GenresRecyclerAdapter(state.genresList) { genre ->
                         viewModel?.setCurrentGenre(genre)
                     }
@@ -100,8 +103,9 @@ class FilmsListFragment : Fragment() {
     private fun showOrHideErrorContainer(isShow: Boolean) {
         errorContainer.isVisible = isShow
     }
-    private fun showOrHideGifLoading(isShow: Boolean){
-        loadingContainer.isVisible=isShow
+
+    private fun showOrHideGifLoading(isShow: Boolean) {
+        loadingContainer.isVisible = isShow
         Glide.with(this)
             .load(R.drawable.cat_dance)
             .into(imageCatGif)

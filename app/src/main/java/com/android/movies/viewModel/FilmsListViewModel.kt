@@ -65,6 +65,11 @@ class FilmsListViewModel : ViewModel() {
             useCase.setLikeOrDelete(id)
         }
     }
+    fun setIgnore(id: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            useCase.setIgnore(id)
+        }
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.android.movies.model
 
+import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
 
@@ -13,6 +14,7 @@ data class FilmsModel(
     @SerializedName("image_url") var imageUrl: String? = null,
     @SerializedName("description") var description: String? = null,
     @SerializedName("genres") var genres: List<String> = arrayListOf(),
-    var isLiked: Boolean = false
+    var isLiked: Boolean = false,
+    var isIgnore: Boolean= false
 
 )

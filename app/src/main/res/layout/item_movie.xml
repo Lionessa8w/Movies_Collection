@@ -71,12 +71,20 @@
                 />
 
         <ImageView
-                android:layout_width="116dp"
-                android:layout_height="108dp"
+                android:layout_width="42dp"
+                android:layout_height="45dp"
                 app:srcCompat="@drawable/baseline_0"
                 android:id="@+id/imageLike"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+                android:layout_width="64dp"
+                android:layout_height="41dp"
+                app:srcCompat="@drawable/baseline_ignore_0"
+                android:id="@+id/imageView_ignore"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
