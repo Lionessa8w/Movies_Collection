@@ -36,26 +36,17 @@ class FilmsRepository private constructor() {
         Log.d(TAG, "$filmsListParseJson")
         val listBd = filmListDao.getAll()
         val likeList = listBd.filter { it.filmState == FilmState.FAVORITE }.map { it.id }
- //       val ignoreList= listBd.filter { it.filmState==FilmState.IGNORE }.map { it.id }
+        val ignoreList = listBd.filter { it.filmState == FilmState.IGNORE }.map { it.id }
         val currentFilmsListParseJson = filmsListParseJson
         currentFilmsListParseJson.forEach {
             val isFavorite = likeList.contains(it.id.toString())
             it.isLiked = isFavorite
         }
-//        currentFilmsListParseJson.forEach {
-//            val isIgnoreFilms = ignoreList.contains(it.id.toString())
-//            it.isIgnore = isIgnoreFilms
-//        }
+        currentFilmsListParseJson.forEach {
+            val isIgnoreFilms = ignoreList.contains(it.id.toString())
+            it.isIgnore = isIgnoreFilms
+        }
 
-        //спросить!!!!!!!!!!!!
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
 
         return currentFilmsListParseJson
     }
@@ -118,6 +109,7 @@ class FilmsRepository private constructor() {
             }
         }
     }
+
 
 
 }

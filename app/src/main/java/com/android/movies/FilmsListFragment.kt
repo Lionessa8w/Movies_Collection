@@ -84,9 +84,9 @@ class FilmsListFragment : Fragment() {
                                     .replace(R.id.container_root, FilmsFragment.newInstance(id))
                                     .addToBackStack(null).commit()
                             },
-                            onLikeClicked = {
+                            onLikeClicked = { id ->
                                 viewModel?.setLikeOrDelete(id)
-                            }, onIgnoreClicked = {
+                            }, onIgnoreClicked = { id ->
                                 viewModel?.setIgnore(id)
                             }
                         )

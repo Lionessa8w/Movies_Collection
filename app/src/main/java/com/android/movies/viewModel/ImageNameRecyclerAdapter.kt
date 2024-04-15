@@ -27,7 +27,7 @@ class ImageNameRecyclerAdapter(
         val filmLocalized: TextView = itemView.findViewById(R.id.localized_name_item)
         val imageFilmRoot: CardView = itemView.findViewById(R.id.film_image_root)
         val imageLike: ImageView = itemView.findViewById(R.id.imageLike)
-        val imageIgnore: ImageView= itemView.findViewById(R.id.imageView_ignore)
+        val imageIgnore: ImageView = itemView.findViewById(R.id.imageView_ignore)
 
     }
 
@@ -64,8 +64,8 @@ class ImageNameRecyclerAdapter(
             }
         }
         holder.imageIgnore.setOnClickListener {
-            filmListModel[position].id?.let {
-                id-> onIgnoreClicked(id)
+            filmListModel[position].id?.let { id ->
+                onIgnoreClicked(id)
                 checkIgnore(holder, position)
             }
         }
@@ -77,8 +77,9 @@ class ImageNameRecyclerAdapter(
         filmListModel[position].isLiked = !filmListModel[position].isLiked
         renderLike(holder, position)
     }
-    fun checkIgnore(holder: ImageNameViewHolder, position: Int){
-        filmListModel[position].isIgnore=!filmListModel[position].isIgnore
+
+    fun checkIgnore(holder: ImageNameViewHolder, position: Int) {
+        filmListModel[position].isIgnore = !filmListModel[position].isIgnore
         renderIgnore(holder, position)
     }
 
@@ -99,15 +100,16 @@ class ImageNameRecyclerAdapter(
             )
         }
     }
-    private fun renderIgnore(holder: ImageNameViewHolder, position: Int){
-        if(filmListModel[position].isIgnore){
+
+    private fun renderIgnore(holder: ImageNameViewHolder, position: Int) {
+        if (filmListModel[position].isIgnore) {
             holder.imageIgnore.setImageDrawable(
                 AppCompatResources.getDrawable(
                     holder.imageIgnore.context,
                     R.drawable.baseline_ignore_red
                 )
             )
-        } else{
+        } else {
             holder.imageIgnore.setImageDrawable(
                 AppCompatResources.getDrawable(
                     holder.imageIgnore.context,
